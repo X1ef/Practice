@@ -1,0 +1,36 @@
+def check_date(day, month, year):
+    def is_leap(year):
+        if year % 400 == 0: return True
+        if year % 100 == 0: return False
+        if year % 4 == 0: return True
+        return False
+    #Проверяем день, месяц и год на целочисленность
+    if (type(day) is not int) or (type(month) is not int) or (type(year) is not int):
+        return False
+    #Проверяем год на заданный диапазон
+    if (year <= 1900) or (year >= 2022):
+        return False
+    #Проверяем месяц на заданный диапазон
+    if (month > 12) or (month < 1):
+        return False
+    #Проверяем день на заданный диапазон
+    if (day < 1) or (day > 31):
+        return False
+    #Проверяем апрель, июнь, сентябрь и ноябрь на количество дней
+    if (month in [4,6,9,11]) and (day > 30):
+        return False
+    #Проверяем количество дней в феврале в зависимости от того, високосный ли год
+    if month == 2:
+        if is_leap(year):
+            if day > 29: return False
+        else:
+            if day > 28: return False
+    return True
+
+def register(surname, name, date, middle_name=None, registry=None):
+    if registry is None:
+        registry = list()
+    if not check_date(*date):
+        raise ValueError("Invalid Date!")
+    registry.append((surname, name, middle_name, date[0], date[1], date[2]))
+    return registry
